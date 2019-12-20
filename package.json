@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node_modules/.bin/webpack",
     "build:s": "node_modules/.bin/webpack --mode=production --config=./webpack.server.config.js",
+    "build:c": "node_modules/.bin/webpack --mode=production --config=./webpack.client.config.js",
     "server": "node ./dist/server.js",
     "watch": "node_modules/.bin/webpack --watch --progress",
     "lint": "node_modules/.bin/eslint --ext .js,.vue src/client"
@@ -33,6 +34,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "express": "^4.17.1",
+    "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.2",
     "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10",

@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const env = require('./env');
 const { defaultConfig, defaultPlugins } = require('./defaultConfig');
 const paths = require('./paths');
@@ -31,7 +32,14 @@ exports.clientConfig = {
     },
   },
 
-  plugins,
+  plugins: [
+    ...plugins,
+    new HtmlWebpackPlugin({
+      filename: '../index.html',
+      template: './src/client/template/index.html',
+      inject: true
+    })
+  ],
 
   module: {
     rules: [
