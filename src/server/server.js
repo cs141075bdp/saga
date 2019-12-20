@@ -1,13 +1,9 @@
 /*  eslint-disable import/no-unresolved, import/no-extraneous-dependencies, import/no-absolute-path */
 
-import express from 'express';
-import bodyParser from 'body-parser';
+import app from './app';
 import * as paths from '../../webpack/paths';
 import readJSONFromFile from '../utils/readJSONFromFile';
 
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 const database = readJSONFromFile(paths.resolve('./database.json'));
 const records = database.records;
 
@@ -32,12 +28,6 @@ app.post('/update', ({ body: { rid, value }}, res) => {
     res.sendStatus(403);
   }
 });
-
-app.get('/', (req, res) => {
-  res.sendFile('/public/index.html', { root: __dirname });
-});
-
-app.use(express.static(`${__dirname}/public`));
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

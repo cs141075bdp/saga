@@ -7,7 +7,7 @@
     "build": "node_modules/.bin/webpack",
     "build:s": "node_modules/.bin/webpack --mode=production --config=./webpack.server.config.js",
     "build:c": "node_modules/.bin/webpack --mode=production --config=./webpack.client.config.js",
-    "server": "node ./dist/server.js",
+    "srv": "yarn build:s && node ./dist/server.js",
     "watch": "node_modules/.bin/webpack --watch --progress",
     "lint": "node_modules/.bin/eslint --ext .js,.vue src/client"
   },

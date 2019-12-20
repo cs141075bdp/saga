@@ -1,0 +1,15 @@
+import express from 'express';
+import bodyParser from 'body-parser';
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+const rootDir = `${__dirname}/..`;
+
+app.get('/', (req, res) => {
+  res.sendFile('/public/index.html', { root: rootDir });
+});
+
+app.use(express.static(`${rootDir}/public`));
+
+export default app;
