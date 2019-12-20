@@ -15,6 +15,7 @@ exports.clientConfig = {
   entry: {
     'client': './src/client/client.js',
   },
+  performance: { hints: false },
   output: {
     path: paths.resolve('public/js'),
     publicPath: '/js/',

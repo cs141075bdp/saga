@@ -15,9 +15,9 @@ module.exports = {
   },
   extends: [
     'plugin:vue/recommended',
-    'airbnb'
+    'eslint:recommended',
+    'airbnb-base'
   ],
-  // extends: 'airbnb-base',
   // required to lint *.vue files
   plugins: [
     'vue'
@@ -47,6 +47,10 @@ module.exports = {
   },
   // add your custom rules here
   'rules': {
+    'vue/script-indent': ['error', 2, {
+      baseIndent: 1,
+      switchCase: 1
+    }],
     "no-cond-assign": 0,
     "no-plusplus": 0,
     "no-restricted-syntax": 0,
@@ -76,15 +80,19 @@ module.exports = {
     "import/no-extraneous-dependencies": [
       "warn",
       {
-        devDependencies: true,
-        // optionalDependencies: true,
-        peerDependencies: true,
         'optionalDependencies': ['test/unit/index.js'],
       },
-      {"packageDir": './src/'}
     ],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-console': process.env.NODE_ENV === 'production' ? 1 : 0
-  }
+  },
+  overrides: [
+    {
+      files: ['*.vue'],
+      rules: {
+        indent: 'off'
+      }
+    }
+  ]
 };
