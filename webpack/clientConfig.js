@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const env = require('./env');
 const { defaultConfig, defaultPlugins } = require('./defaultConfig');
 const paths = require('./paths');
@@ -34,6 +35,7 @@ exports.clientConfig = {
 
   plugins: [
     ...plugins,
+    new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       filename: '../index.html',
       template: './src/client/template/index.html',
@@ -51,7 +53,8 @@ exports.clientConfig = {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
-        include: [paths.resolve('assets'), paths.resolve('src')],
+        // include: [paths.resolve('src')],
+        exclude: /node_modules/,
         options: {
           formatter: require('eslint-friendly-formatter')
         }
@@ -68,7 +71,7 @@ exports.clientConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [paths.resolve('assets'), paths.resolve('src')]
+        include: [paths.resolve('src')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

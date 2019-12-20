@@ -2,17 +2,25 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
   parserOptions: {
-    sourceType: 'module'
+    parser: 'babel-eslint',
+    sourceType: 'module',
+    ecmaVersion: 2017,
   },
   env: {
     browser: true,
+    es6: true,
+    node: true,
+    jest: true
   },
-  extends: 'airbnb-base',
+  extends: [
+    'plugin:vue/recommended',
+    'airbnb'
+  ],
+  // extends: 'airbnb-base',
   // required to lint *.vue files
   plugins: [
-    'html'
+    'vue'
   ],
   globals: {
     "window": true,
@@ -24,8 +32,18 @@ module.exports = {
     'import/resolver': {
       'webpack': {
         'config': 'webpack.config.js'
+      },
+      "node": {
+        "extensions": [
+          ".js",
+          ".vue"
+        ]
       }
-    }
+    },
+    "import/extensions": [
+      ".js",
+      ".vue"
+    ]
   },
   // add your custom rules here
   'rules': {
@@ -46,14 +64,25 @@ module.exports = {
     "no-param-reassign": ["error", { "props": false }],
     "max-len": [2, {"code": 145, "tabWidth": 4, "ignoreUrls": true}],
     // don't require .vue extension when importing
-    'import/extensions': ['error', 'always', {
-      'js': 'never',
-      'vue': 'never'
-    }],
+    'import/extensions': [
+      'error',
+      'always',
+      {
+        'js': 'never',
+        'vue': 'never'
+      }
+    ],
     // allow optionalDependencies
-    'import/no-extraneous-dependencies': ['error', {
-      'optionalDependencies': ['test/unit/index.js']
-    }],
+    "import/no-extraneous-dependencies": [
+      "warn",
+      {
+        devDependencies: true,
+        // optionalDependencies: true,
+        peerDependencies: true,
+        'optionalDependencies': ['test/unit/index.js'],
+      },
+      {"packageDir": './src/'}
+    ],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-console': process.env.NODE_ENV === 'production' ? 1 : 0

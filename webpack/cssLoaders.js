@@ -24,7 +24,7 @@ const cssLoaders = (options) => {
         loader: loader + '-loader',
         options: Object.assign({}, loaderOptions, {
           sourceMap: !env.isProduction,
-          include: [paths.resolve('assets/js')],
+          include: [paths.resolve('src/client')],
         })
       })
     }
