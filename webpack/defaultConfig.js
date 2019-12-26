@@ -31,7 +31,11 @@ exports.defaultConfig = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-    }
+    },
+    modules: [
+      paths.resolve('./node_modules'),
+      paths.resolve('./src'),
+    ]
   },
   optimization: {
     minimizer,

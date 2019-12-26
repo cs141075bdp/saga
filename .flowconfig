@@ -1,0 +1,10 @@
+[ignore]
+<PROJECT_ROOT>/node_modules/.*
+<PROJECT_ROOT>/dist/.*
+<PROJECT_ROOT>/public/.*
+[options]
+module.file_ext=.vue
+module.file_ext=.js
+include_warnings=true
+suppress_comment= \\(.\\|\n\\)*\\$FlowIgnoreMe
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe

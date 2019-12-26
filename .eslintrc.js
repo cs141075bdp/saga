@@ -20,7 +20,8 @@ module.exports = {
   ],
   // required to lint *.vue files
   plugins: [
-    'vue'
+    'vue',
+    'flowtype',
   ],
   globals: {
     "window": true,
@@ -30,10 +31,10 @@ module.exports = {
   // check if imports actually resolve
   'settings': {
     'import/resolver': {
-      'webpack': {
+      webpack: {
         'config': 'webpack.config.js'
       },
-      "node": {
+      node: {
         "extensions": [
           ".js",
           ".vue"

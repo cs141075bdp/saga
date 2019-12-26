@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const externals = require('webpack-node-externals');
+const FlowWebpackPlugin = require('flow-webpack-plugin');
 
 const { defaultConfig } = require('./defaultConfig');
 const paths = require('./paths');
@@ -15,7 +16,9 @@ exports.serverConfig = {
     __dirname: false,
   },
   target: 'node',
-  externals: [externals()],
+  externals: [externals({
+    whitelist: ['assign-deep', 'axios'],
+  })],
   entry: {
     'server': './src/server/server.js',
   },
@@ -39,10 +42,20 @@ exports.serverConfig = {
 
   plugins: [
     new webpack.IgnorePlugin(/\.(css|less)$/),
+    new FlowWebpackPlugin(),
   ],
 
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        exclude: /node_modules/,
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
