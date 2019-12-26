@@ -1,8 +1,5 @@
-import assign from 'assign-deep';
+import scaffold from '../../utils/scaffold';
 import type { IAccount } from './account';
-
-const deepCopy = (o: any) => JSON.parse(JSON.stringify(o));
-const scaffold = (template: any) => (...models: any[]) => deepCopy(assign({}, template, ...models.filter(Boolean)));
 
 const AccountStructure: IAccount = {
   rid: 0,
