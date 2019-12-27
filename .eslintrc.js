@@ -84,6 +84,14 @@ module.exports = {
         'optionalDependencies': ['test/unit/index.js'],
       },
     ],
+    'vue/max-attributes-per-line': [2, {
+      'singleline': 5,
+      'multiline': {
+        'max': 5,
+        'allowFirstLine': true,
+      }
+    }],
+    'object-curly-newline': ['error', { 'consistent': true }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'no-console': process.env.NODE_ENV === 'production' ? 1 : 0

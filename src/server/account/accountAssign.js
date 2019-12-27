@@ -1,9 +1,9 @@
 import scaffold from '../../utils/scaffold';
-import type { IAccount } from './account';
+import type { IAccount } from '../../models/account';
 
 const AccountStructure: IAccount = {
   rid: 0,
-  mid: 0,
+  mid: null,
   caption: '',
   url: '',
   authorize: false,

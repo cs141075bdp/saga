@@ -1,6 +1,9 @@
 <template>
-  <tr>
-    <td v-text="account.caption" />
+  <tr class="account-row">
+    <td :class="captionClasses">
+      <i v-if="account.hasChild" :class="['fa', opened ? 'fa-minus-square' : 'fa-plus-square' ]" aria-hidden="true" @click="toggleOpen" />
+      {{ account.caption }}
+    </td>
     <td v-text="account.time_last_work" />
     <td v-text="account.time_next_active" />
     <td v-text="account.accauntname" />
@@ -15,10 +18,34 @@
         require: true,
         default: () => ({}),
       },
+      opened: Boolean,
+    },
+
+    computed: {
+      captionClasses() {
+        const classes = [
+          this.account.hasChild ? 'has-child' : '',
+          `caption-level${this.account.level}`,
+        ];
+
+        return classes.filter(Boolean).join(' ');
+      },
+    },
+
+    methods: {
+      toggleOpen() {
+        if (this.account.hasChild) {
+          this.$emit('toggleOpen', this.account);
+        }
+      },
     },
   };
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  .account-row {
+    .fa {
+      cursor: pointer;
+    }
+  }
 </style>
