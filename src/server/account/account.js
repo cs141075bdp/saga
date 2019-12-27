@@ -3,6 +3,7 @@ import * as paths from '../../../webpack/paths';
 import accountAssign from '../../models/accountAssign';
 import type { IAccount, IDataBase, IDBAccount } from '../../models/account';
 import app from '../app';
+import correctObjectBySchema from '../modules/correctObjectBySchema';
 import { loadJSON, saveJSON } from '../modules/jsonStorage';
 
 const DATA_BASE_PATH = paths.resolve('./database.json');
@@ -33,9 +34,9 @@ app.patch('/api/account/update', ({ body: value }, res) => {
   if (index >= 0) {
     records[index] = {
       ...records[index],
-      ...value,
+      ...correctObjectBySchema(value, records[index]),
     };
-    saveJSON(paths.resolve('./database1.json'), database);
+    saveJSON(DATA_BASE_PATH, database);
     res.sendStatus(200);
   } else {
     res.sendStatus(403);
