@@ -13,7 +13,7 @@ export interface IAccount {
   cookie: string;
   group: boolean;
   cookie_clear: boolean;
-  active_job: boolean;
+  active_job: ?boolean;
   auth_script_name: string;
 }
 export interface IDBAccount extends IAccount {

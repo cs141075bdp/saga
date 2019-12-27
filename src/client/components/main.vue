@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>Название</th>
+          <th>Авто</th>
           <th>Последний запуск</th>
           <th>Следующий запуск</th>
           <th>Account</th>
@@ -17,6 +18,7 @@
           :account="account"
           :opened="!closeGroups.includes(account.rid)"
           @toggleOpen="toggleOpen"
+          @update="updateAccount"
         />
       </tbody>
     </table>
@@ -25,7 +27,7 @@
 
 <script>
   import type { IAccount } from '../../models/account';
-  import api from '../router/api';
+  import Api from '../router/api';
   import AccountRow from './accountRow';
 
   export default {
@@ -53,7 +55,7 @@
     },
 
     created() {
-      api.account.list()
+      Api.account.list()
         .then(({ data }) => {
           const getLevel = (account: ?IAccount): number => {
             if (!account || !account.mid) {
@@ -85,6 +87,13 @@
         } else {
           this.closeGroups.push(account.rid);
         }
+      },
+
+      updateAccount(account: IAccount) {
+        Api.account.update(account)
+          .then(() => {
+            console.log('update');
+          });
       },
 
       getChildrenAccounts(mid: number) {

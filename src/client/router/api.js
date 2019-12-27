@@ -8,5 +8,9 @@ export default {
     list() {
       return axiosInstance.get(genUrl('api/account/list'));
     },
+
+    update(data) {
+      return axiosInstance.patch(genUrl('api/account/update'), data);
+    },
   },
 };

@@ -1,5 +1,5 @@
-import scaffold from '../../utils/scaffold';
-import type { IAccount } from '../../models/account';
+import scaffold from '../utils/scaffold';
+import type { IAccount } from './account';
 
 const AccountStructure: IAccount = {
   rid: 0,
@@ -14,7 +14,7 @@ const AccountStructure: IAccount = {
   cookie: '',
   group: false,
   cookie_clear: false,
-  active_job: false,
+  active_job: null,
   auth_script_name: '',
 };
 
