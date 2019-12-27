@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const env = require('./env');
 const { defaultConfig, defaultPlugins } = require('./defaultConfig');
 const paths = require('./paths');
@@ -7,6 +8,9 @@ const cssUtils = require('./cssLoaders');
 
 const plugins = [
   ...defaultPlugins,
+  new MiniCssExtractPlugin({
+    filename: 'main.css',
+  }),
 ];
 
 exports.clientConfig = {
@@ -64,9 +68,19 @@ exports.clientConfig = {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: cssUtils.cssLoaders({
-            sourceMap: !env.isProduction
-          })
+          loaders: {
+            use: [
+              // 'style-loader',
+              MiniCssExtractPlugin.loader,
+              // 'vue-style-loader',
+              'extract-loader',
+              'css-loader',
+              'less-loader',
+            ]
+          },
+          // loaders: cssUtils.cssLoaders({
+          //   sourceMap: !env.isProduction
+          // })
         }
       },
       {
@@ -90,7 +104,26 @@ exports.clientConfig = {
           name: paths.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      ...cssUtils.styleLoaders({ sourceMap: !env.isProduction }),
+      {
+        test: /\.css$/,
+        use: [
+          // 'vue-style-loader',
+          // 'extract-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+        ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          // 'style-loader',
+          MiniCssExtractPlugin.loader,
+          // 'vue-style-loader',
+          // 'extract-loader',
+          'css-loader',
+          'less-loader',
+        ]
+      },
     ]
   }
 };

@@ -30,7 +30,7 @@ app.get('/api/account/list', (req, res) => {
 
 app.post('/api/account/update', ({ body: { rid, value } }, res) => {
   const { records } = database;
-  const index = records.findIndex((account) => account.rid === rid);
+  const index = records.findIndex((account: IAccount) => account.rid === rid);
 
   if (index >= 0) {
     records[index] = {

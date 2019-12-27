@@ -16,7 +16,7 @@
 
     created() {
       api.account.list()
-        .then((res) => {
+        .then(({ data }) => {
           console.log(res);
         });
     },
