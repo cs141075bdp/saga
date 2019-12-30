@@ -3,11 +3,16 @@ import * as paths from '../../../webpack/paths';
 import accountAssign from '../../models/accountAssign';
 import type { IAccount, IDataBase, IDBAccount } from '../../models/account';
 import app from '../app';
-import correctObjectBySchema from '../modules/correctObjectBySchema';
 import { loadJSON, saveJSON } from '../modules/jsonStorage';
+import migrate from './migrateDB';
 
 const DATA_BASE_PATH = paths.resolve('./database.json');
 const database: IDataBase = loadJSON(DATA_BASE_PATH);
+
+if (migrate(database)) {
+  saveJSON(DATA_BASE_PATH, database);
+}
+
 const getAccounts = (): Array<IAccount> => database.records.map((accountItem: IDBAccount) => {
   let value: ?IAccount = null;
 
@@ -34,7 +39,7 @@ app.patch('/api/account/update', ({ body: value }, res) => {
   if (index >= 0) {
     records[index] = {
       ...records[index],
-      ...correctObjectBySchema(value, records[index]),
+      ...value,
     };
     saveJSON(DATA_BASE_PATH, database);
     res.sendStatus(200);

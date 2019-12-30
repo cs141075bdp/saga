@@ -2,8 +2,9 @@
   <tr class="account-row">
     <td :class="captionClasses">
       <i v-if="account.hasChild" :class="['fa', opened ? 'fa-minus-square' : 'fa-plus-square' ]" aria-hidden="true" @click="toggleOpen" />
-      {{ account.caption }}
+      <row-text v-model="account.caption" />
     </td>
+    <td v-text="account.description" />
     <td>
       <check-box v-if="account.active_job !== null" v-model="account.active_job" />
     </td>
@@ -15,10 +16,12 @@
 
 <script>
   import CheckBox from './checkbox';
+  import RowText from './rowText';
 
   export default {
     components: {
       CheckBox,
+      RowText,
     },
 
     props: {
@@ -30,11 +33,17 @@
       opened: Boolean,
     },
 
+    data() {
+      return {
+        editing: false,
+      };
+    },
+
     computed: {
       captionClasses() {
         const classes = [
           this.account.hasChild ? 'has-child' : '',
-          `caption-level${this.account.level}`,
+          `caption-level${this.account.level + 1}`,
         ];
 
         return classes.filter(Boolean).join(' ');
@@ -64,6 +73,9 @@
   .account-row {
     .fa {
       cursor: pointer;
+      margin-left: -19px;
+      position: absolute;
+      margin-top: 4px;
     }
   }
 </style>

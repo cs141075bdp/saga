@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>Название</th>
+          <th>Описание</th>
           <th>Авто</th>
           <th>Последний запуск</th>
           <th>Следующий запуск</th>
@@ -90,7 +91,8 @@
       },
 
       updateAccount(account: IAccount) {
-        Api.account.update(account)
+        const { level, hasChild, ...baseAccount } = account;
+        Api.account.update(baseAccount)
           .then(() => {
             console.log('update');
           });

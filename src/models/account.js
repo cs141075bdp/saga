@@ -15,6 +15,7 @@ export interface IAccount {
   cookie_clear: boolean;
   active_job: ?boolean;
   auth_script_name: string;
+  description: ?string;
 }
 export interface IDBAccount extends IAccount {
   js_object: string;
