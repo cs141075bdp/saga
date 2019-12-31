@@ -9,6 +9,11 @@ import App from './app';
 Vue.config.devtools = true;
 
 Vue.use(VueRouter);
+Vue.directive('focus', {
+  inserted: (el) => {
+    el.focus();
+  },
+});
 
 sync(store, router);
 new Vue({ // eslint-disable-line

@@ -3,12 +3,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Название</th>
-          <th>Описание</th>
-          <th>Авто</th>
-          <th>Последний запуск</th>
-          <th>Следующий запуск</th>
-          <th>Account</th>
+          <th v-for="item in schema" :key="item.name" v-text="item.caption" :style="item.style" />
         </tr>
       </thead>
       <tbody>
@@ -18,6 +13,7 @@
           :key="account.rid"
           :account="account"
           :opened="!closeGroups.includes(account.rid)"
+          :schema="schema"
           @toggleOpen="toggleOpen"
           @update="updateAccount"
         />
@@ -31,6 +27,15 @@
   import Api from '../router/api';
   import AccountRow from './accountRow';
 
+  const schema = [
+    { caption: 'Название', name: 'caption' },
+    { caption: 'Описание', name: 'description' },
+    { caption: 'Авто', name: 'active_job' },
+    { caption: 'Последний запуск', name: 'time_last_work', style: 'width: 11em;' },
+    { caption: 'Следующий запуск', name: 'time_next_active', style: 'width: 11em;' },
+    { caption: 'Account', name: 'accauntname' },
+  ];
+
   export default {
     components: {
       AccountRow,
@@ -40,6 +45,7 @@
       return {
         accounts: [],
         closeGroups: [],
+        schema,
       };
     },
 
@@ -113,6 +119,12 @@
       max-width: 900px;
       margin: 10px auto;
       background-color: silver;
+
+      tr {
+        &:hover {
+          background-color: #1fc2f5;
+        }
+      }
     }
   }
 </style>

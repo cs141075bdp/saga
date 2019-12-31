@@ -1,16 +1,18 @@
 <template>
-  <tr class="account-row">
-    <td :class="captionClasses">
+  <tr class="account-row" @mouseenter="hover = true" @mouseleave="hover = false">
+    <td :class="captionClasses" valign="middle">
       <i v-if="account.hasChild" :class="['fa', opened ? 'fa-minus-square' : 'fa-plus-square' ]" aria-hidden="true" @click="toggleOpen" />
-      <row-text v-model="account.caption" />
+      <row-text v-model="account.caption" :hover="hover" />
     </td>
-    <td v-text="account.description" />
+    <td>
+      <row-text v-model="account.description" :hover="hover" />
+    </td>
     <td>
       <check-box v-if="account.active_job !== null" v-model="account.active_job" />
     </td>
-    <td v-text="account.time_last_work" />
-    <td v-text="account.time_next_active" />
-    <td v-text="account.accauntname" />
+    <td valign="middle" v-text="account.time_last_work" />
+    <td valign="middle" v-text="account.time_next_active" />
+    <td valign="middle" v-text="account.accauntname" />
   </tr>
 </template>
 
@@ -31,11 +33,16 @@
         default: () => ({}),
       },
       opened: Boolean,
+      schema: {
+        type: Array,
+        required: true,
+      },
     },
 
     data() {
       return {
         editing: false,
+        hover: false,
       };
     },
 
