@@ -35,6 +35,12 @@
 </script>
 
 <style lang="less">
+  .fancy {
+    input {
+      height: 100%;
+    }
+  }
+
   .fancy label {
     display: inline-flex;
     align-items: baseline;
