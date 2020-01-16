@@ -10,7 +10,7 @@ export default {
     },
 
     update(data) {
-      return axiosInstance.patch(genUrl('api/account/update'), data);
+      return axiosInstance.post(genUrl('api/account/update'), data);
     },
   },
 };

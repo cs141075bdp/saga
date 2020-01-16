@@ -31,8 +31,24 @@ app.get('/api/account/list', (req, res) => {
   res.send(getAccounts());
 });
 
-app.patch('/api/account/update', ({ body: value }, res) => {
+app.post('/api/account/update', ({ body: value }, res) => {
 // app.patch('/api/account/update', ({ body: { rid, value } }, res) => {
+  const { records } = database;
+  const index = records.findIndex((account: IAccount) => account.rid === value.rid);
+
+  if (index >= 0) {
+    records[index] = {
+      ...records[index],
+      ...value,
+    };
+    saveJSON(DATA_BASE_PATH, database);
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(403);
+  }
+});
+
+app.patch('/api/account/update', ({ body: value }, res) => {
   const { records } = database;
   const index = records.findIndex((account: IAccount) => account.rid === value.rid);
 
