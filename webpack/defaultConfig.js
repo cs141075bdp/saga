@@ -7,35 +7,36 @@ const env = require('./env');
 const paths = require('./paths');
 
 const minimizer = [];
+
 if (env.isProduction) {
   minimizer.push(
-      new webpack.optimize.UglifyJsPlugin({
-        beautify: false,
-        comments: false,
-        compress: {
-          sequences     : true,
-          booleans      : true,
-          loops         : true,
-          unused      : true,
-          warnings    : false,
-          drop_console: true,
-          unsafe      : true
-        },
-        sourceMap: false,
-      })
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      comments: false,
+      compress: {
+        sequences: true,
+        booleans: true,
+        loops: true,
+        unused: true,
+        warnings: false,
+        drop_console: true,
+        unsafe: true,
+      },
+      sourceMap: false,
+    }),
   );
 }
 
 exports.defaultConfig = {
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.ts', '.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
+      vue$: 'vue/dist/vue.esm.js',
     },
     modules: [
       paths.resolve('./node_modules'),
       paths.resolve('./src'),
-    ]
+    ],
   },
   optimization: {
     minimizer,
@@ -48,7 +49,7 @@ exports.defaultConfig = {
 };
 exports.defaultPlugins = [
   new ExtractTextPlugin({
-    filename: paths.assetsPath('/[name].[chunkhash].css')
+    filename: paths.assetsPath('/[name].[chunkhash].css'),
   }),
   new CleanWebpackPlugin({
     dry: false,

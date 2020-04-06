@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const genUrl = (pathName) => `${window.location.href}${pathName}`;
+const genUrl = pathName => `${window.location.href}${pathName}`;
 const axiosInstance = axios.create({});
 
 export default {

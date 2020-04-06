@@ -3,7 +3,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th v-for="item in schema" :key="item.name" v-text="item.caption" :style="item.style" />
+          <th v-for="item in schema" :key="item.name" :style="item.style" v-text="item.caption" />
         </tr>
       </thead>
       <tbody>
@@ -22,10 +22,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue from 'vue';
   import type { IAccount } from '../../models/account';
   import Api from '../router/api';
-  import AccountRow from './accountRow';
+  import AccountRow from './accountRow.vue';
 
   const schema = [
     { caption: 'Название', name: 'caption' },
@@ -36,25 +37,30 @@
     { caption: 'Account', name: 'accauntname' },
   ];
 
-  export default {
+  interface IViewAccount extends IAccount {
+    level: number,
+    hasChild: boolean,
+  }
+
+  export default Vue.extend({
     components: {
       AccountRow,
     },
 
     data() {
       return {
-        accounts: [],
-        closeGroups: [],
+        accounts: [] as Array<IViewAccount>,
+        closeGroups: [] as number[],
         schema,
       };
     },
 
     computed: {
-      hiddenRows() {
-        const findChildren = (rid: number) => {
-          const rids = this.getChildrenAccounts(rid).map((account: IAccount) => account.rid);
+      hiddenRows(): number[] {
+        const findChildren = (rid: number): Array<number> => {
+          const rids: number[] = this.getChildrenAccounts(rid).map((account: IViewAccount): number => account.rid);
 
-          return [...rids, ...rids.map(findChildren)];
+          return [...rids, ...rids.map(findChildren)].flat(5);
         };
 
         return this.closeGroups.map(findChildren).flat(5);
@@ -64,14 +70,14 @@
     created() {
       Api.account.list()
         .then(({ data }) => {
-          const getLevel = (account: ?IAccount): number => {
+          const getLevel = (account: IAccount | IViewAccount | null): number => {
             if (!account || !account.mid) {
               return 0;
             }
 
-            return 1 + getLevel(data.find((item: IAccount) => item.rid === account.mid));
+            return 1 + getLevel(data.find((item: IViewAccount) => item.rid === account.mid));
           };
-          const getAdditionalProps = (account: ?IAccount) => {
+          const getAdditionalProps = (account: IAccount) => {
             const level = getLevel(account);
 
             return {
@@ -87,7 +93,7 @@
     },
 
     methods: {
-      toggleOpen(account: IAccount) {
+      toggleOpen(account: IViewAccount): void {
         if (this.closeGroups.includes(account.rid)) {
           const index = this.closeGroups.indexOf(account.rid);
           this.closeGroups.splice(index, 1);
@@ -96,7 +102,7 @@
         }
       },
 
-      updateAccount(account: IAccount) {
+      updateAccount(account: IViewAccount): void {
         const { level, hasChild, ...baseAccount } = account;
         Api.account.update(baseAccount)
           .then(() => {
@@ -104,11 +110,11 @@
           });
       },
 
-      getChildrenAccounts(mid: number) {
+      getChildrenAccounts(mid: number): Array<IViewAccount> {
         return this.accounts.filter((account: IAccount) => account.mid === mid);
       },
     },
-  };
+  });
 </script>
 
 <style lang="less">

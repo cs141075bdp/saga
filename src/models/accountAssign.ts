@@ -1,9 +1,9 @@
 import scaffold from '../utils/scaffold';
-import type { IAccount } from './account';
+import { IAccount } from './account';
 
 const AccountStructure: IAccount = {
   rid: 0,
-  mid: null,
+  mid: 0,
   caption: '',
   url: '',
   authorize: false,
@@ -16,8 +16,9 @@ const AccountStructure: IAccount = {
   cookie_clear: false,
   active_job: null,
   auth_script_name: '',
+  description: null,
 };
 
-const accountAssign = scaffold(AccountStructure);
+const accountAssign: (obj: Object) => IAccount = scaffold(AccountStructure);
 
 export default accountAssign;

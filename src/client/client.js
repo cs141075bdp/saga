@@ -21,5 +21,5 @@ new Vue({ // eslint-disable-line
   el: '#app',
   store,
   router,
-  render: (h) => h(App),
+  render: h => h(App),
 });

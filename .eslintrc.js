@@ -1,11 +1,15 @@
 // http://eslint.org/docs/user-guide/configuring
+const env = require('./webpack/env');
 
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: "@typescript-eslint/parser",
     sourceType: 'module',
-    ecmaVersion: 2017,
+    ecmaVersion: 2019,
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   env: {
     browser: true,
@@ -14,18 +18,22 @@ module.exports = {
     jest: true
   },
   extends: [
-    'plugin:vue/recommended',
+    'plugin:vue-libs/recommended',
     'eslint:recommended',
-    'airbnb-base'
+    'airbnb-base',
+    '@vue/typescript',
+    'plugin:vue/recommended',
+    "@vue/eslint-config-typescript"
   ],
   // required to lint *.vue files
   plugins: [
-    'vue',
-    'flowtype',
+    "@typescript-eslint",
   ],
   globals: {
-    "window": true,
-    "google": true,
+    'Iterator': true,
+    'Iterable': true,
+    window: true,
+    google: true,
     "__webpack_public_path__": true,
   },
   // check if imports actually resolve
@@ -37,21 +45,36 @@ module.exports = {
       node: {
         "extensions": [
           ".js",
+          ".ts",
           ".vue"
         ]
       }
     },
     "import/extensions": [
       ".js",
+      ".ts",
       ".vue"
     ]
   },
   // add your custom rules here
-  'rules': {
-    'vue/script-indent': ['error', 2, {
-      baseIndent: 1,
-      switchCase: 1
-    }],
+  rules: {
+    // generic js
+    'semi': [2, 'always'],
+    'semi-style': 0,
+    'prefer-destructuring': 0,
+    'function-paren-newline': ['error', 'consistent'],
+    'func-names': 0,
+    'object-curly-newline': ['error', { 'consistent': true }],
+    'no-trailing-spaces': 0,
+    'no-undef': 'error',
+    'no-new': 0,
+    'class-methods-use-this': 0,
+    'no-underscore-dangle': ['error', { 'allowAfterThis': true }],
+    'no-multiple-empty-lines': ['error', { max: 1 }],
+    'padding-line-between-statements': ['error',
+      { blankLine: 'always', prev: '*', next: 'return' },
+      { blankLine: 'always', prev: '*', next: 'if' }
+    ],
     "no-cond-assign": 0,
     "no-plusplus": 0,
     "no-restricted-syntax": 0,
@@ -65,43 +88,83 @@ module.exports = {
     "no-confusing-arrow": 0,
     "no-extra-boolean-cast": 0,
     "no-lonely-if": 0,
-    "no-underscore-dangle": 0,
     "no-param-reassign": ["error", { "props": false }],
-    "max-len": [2, {"code": 145, "tabWidth": 4, "ignoreUrls": true}],
-    // don't require .vue extension when importing
-    'import/extensions': [
-      'error',
-      'always',
-      {
-        'js': 'never',
-        'vue': 'never'
-      }
-    ],
-    // allow optionalDependencies
-    "import/no-extraneous-dependencies": [
-      "warn",
-      {
-        'optionalDependencies': ['test/unit/index.js'],
+    "arrow-parens": [2, "as-needed", { "requireForBlockBody": true }],
+    "implicit-arrow-linebreak": "off",
+    "no-alert": "off",
+    'max-len': 0,
+    // "max-len": [2, {"code": 195, "tabWidth": 4, "ignoreStrings": true, "ignoreUrls": true, "ignoreTemplateLiterals": true}],
+    "vue/html-self-closing": ["error", {
+      "html": {
+        "void": "never",
+        "normal": "always",
+        "component": "always"
       },
-    ],
+      "svg": "never",
+      "math": "always"
+    }],
+    // don't require .vue extension when importing
+    'import/extensions': ['error', 'always', {
+      'js': 'never',
+      'vue': 'ignorePackages',
+      'ts': 'never',
+      'json': 'always'
+    }],
+    // allow optionalDependencies
+    'import/no-extraneous-dependencies': ['error', {
+      'optionalDependencies': ['test/unit/index.js']
+    }],
+    // vue
+    'vue/script-indent': ['error', 2, {
+      baseIndent: 1,
+      switchCase: 1
+    }],
+    'vue/html-indent': ['error', 2, {
+      'attribute': 1,
+      'closeBracket': 0,
+      'alignAttributesVertically': false,
+    }],
     'vue/max-attributes-per-line': [2, {
       'singleline': 5,
       'multiline': {
-        'max': 5,
+        'max': 1,
         'allowFirstLine': true,
       }
     }],
-    'object-curly-newline': ['error', { 'consistent': true }],
+    'vue/no-dupe-keys': ['error', {
+      "groups": []
+    }],
+    'vue/require-default-prop': 0,
+    'vue/no-duplicate-attributes': ['error', {
+      'allowCoexistClass': false,
+      'allowCoexistStyle': false
+    }],
+    // generic js
+    'object-shorthand': ['error', 'always', { 'avoidQuotes': false }],
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'no-console': process.env.NODE_ENV === 'production' ? 1 : 0
+    'no-debugger': env.isProduction ? 2 : 0,
+    'no-console': env.isProduction ? 1 : 0,
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/multiline-html-element-content-newline": "off",
+    "vue/no-v-html": "off",
+    // "@typescript-eslint/rule-name": "off",
+    'no-unused-vars': env.isProduction ? "error" : "off",
+    "@typescript-eslint/no-unused-vars": [env.isProduction ? "error" : "warn", {
+      "vars": "all",
+      "args": "after-used",
+      "ignoreRestSiblings": true,
+    }]
   },
-  overrides: [
+  'overrides': [
     {
-      files: ['*.vue'],
-      rules: {
-        indent: 'off'
-      }
-    }
-  ]
+      'files': [ '*.vue' ],
+      'rules': {
+        'indent': 'off',
+        'vue/script-indent': ['error', 2, {
+          'baseIndent': 1,
+          'switchCase': 1,
+        }],
+      },
+    },
+  ],
 };

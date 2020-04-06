@@ -1,9 +1,9 @@
 const webpack = require('webpack');
 const externals = require('webpack-node-externals');
-const FlowWebpackPlugin = require('flow-webpack-plugin');
 
 const { defaultConfig } = require('./defaultConfig');
 const paths = require('./paths');
+const env = require('./env');
 const readJSONFromFile = require('../src/utils/readJSONFromFile');
 
 exports.serverConfig = {
@@ -20,13 +20,13 @@ exports.serverConfig = {
     whitelist: ['assign-deep', 'axios'],
   })],
   entry: {
-    'server': './src/server/server.js',
+    server: './src/server/server.ts',
   },
   output: {
     path: paths.resolve('dist'),
     publicPath: '/',
     filename: '[name].js',
-    devtoolModuleFilenameTemplate: info => {
+    devtoolModuleFilenameTemplate: (info) => {
       let $filename;
 
       if (info.resource.match(/\.vue$/)) {
@@ -42,7 +42,6 @@ exports.serverConfig = {
 
   plugins: [
     new webpack.IgnorePlugin(/\.(css|less)$/),
-    new FlowWebpackPlugin(),
   ],
 
   module: {
@@ -53,8 +52,12 @@ exports.serverConfig = {
         enforce: 'pre',
         exclude: /node_modules/,
         options: {
-          formatter: require('eslint-friendly-formatter')
-        }
+          formatter: require('eslint-friendly-formatter'),
+          emitError: env.isProduction,
+          failOnError: env.isProduction,
+          failOnWarning: env.isProduction,
+          emitWarning: env.isProduction,
+        },
       },
       {
         test: /\.js$/,
@@ -63,7 +66,16 @@ exports.serverConfig = {
           loader: 'babel-loader',
           options: readJSONFromFile(paths.resolve('./.babelrc')),
         },
-      }
-    ]
-  }
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        loader: 'ts-loader',
+        include: [paths.resolve('src')],
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        },
+      },
+    ],
+  },
 };
