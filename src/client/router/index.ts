@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Main from '../components/main';
-import Battle from '../components/battle';
+import Main from '../components/main.vue';
+import Battle from '../components/battle.vue';
 
 Vue.use(Router);
 

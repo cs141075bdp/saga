@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 
 import router from './router/index';
 import store from './store/index';
-import App from './app';
+import App from './app.vue';
 
 Vue.config.devtools = true;
 
@@ -16,8 +16,7 @@ Vue.directive('focus', {
 });
 
 sync(store, router);
-new Vue({ // eslint-disable-line
-  functionality: true,
+new Vue({
   el: '#app',
   store,
   router,

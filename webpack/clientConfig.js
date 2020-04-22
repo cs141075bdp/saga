@@ -17,7 +17,7 @@ exports.clientConfig = {
   ...defaultConfig,
   mode: 'development',
   entry: {
-    client: './src/client/client.js',
+    client: './src/client/client.ts',
   },
   performance: { hints: false },
   output: {
