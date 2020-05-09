@@ -19,21 +19,22 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+  import Vue, { PropType } from 'vue';
   import { isEmpty } from 'lodash';
 
-  export default {
+  export default Vue.extend({
     props: {
       value: {
-        type: String,
+        type: String as PropType<string>,
         default: null,
       },
       editable: {
-        type: Boolean,
+        type: Boolean as PropType<boolean>,
         default: true,
       },
       hover: {
-        type: Boolean,
+        type: Boolean as PropType<boolean>,
         required: true,
       },
     },
@@ -46,7 +47,7 @@
     },
 
     computed: {
-      isEmpty() {
+      isEmpty(): boolean {
         return isEmpty(this.data);
       },
     },
@@ -61,12 +62,12 @@
     },
 
     methods: {
-      save() {
+      save(): void {
         this.$emit('input', this.data);
         this.editing = false;
       },
     },
-  };
+  });
 </script>
 <style lang="less">
   .row-text {

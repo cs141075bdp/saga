@@ -7,10 +7,12 @@
   </div>
 </template>
 
-<script>
-  export default {
+<script lang="ts">
+  import Vue, { PropType } from 'vue';
+
+  export default Vue.extend({
     props: {
-      value: Boolean,
+      value: Boolean as PropType<boolean>,
     },
 
     data() {
@@ -31,7 +33,7 @@
         },
       },
     },
-  };
+  });
 </script>
 
 <style lang="less">

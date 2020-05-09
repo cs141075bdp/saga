@@ -16,11 +16,13 @@
   </tr>
 </template>
 
-<script>
-  import CheckBox from './checkbox';
-  import RowText from './rowText';
+<script lang="ts">
+  import Vue, { PropType } from 'vue';
+  import CheckBox from './checkbox.vue';
+  import RowText from './rowText.vue';
+  import { IViewAccount } from '../../models/account';
 
-  export default {
+  export default Vue.extend({
     components: {
       CheckBox,
       RowText,
@@ -28,26 +30,25 @@
 
     props: {
       account: {
-        type: Object,
-        require: true,
-        default: () => ({}),
+        type: Object as PropType<IViewAccount>,
+        required: true,
       },
-      opened: Boolean,
+      opened: Boolean as PropType<boolean>,
       schema: {
-        type: Array,
+        type: Array as PropType<Array<string>>,
         required: true,
       },
     },
 
     data() {
       return {
-        editing: false,
-        hover: false,
+        editing: false as Boolean,
+        hover: false as Boolean,
       };
     },
 
     computed: {
-      captionClasses() {
+      captionClasses(): string {
         const classes = [
           this.account.hasChild ? 'has-child' : '',
           `caption-level${this.account.level + 1}`,
@@ -67,13 +68,13 @@
     },
 
     methods: {
-      toggleOpen() {
+      toggleOpen(): void {
         if (this.account.hasChild) {
           this.$emit('toggleOpen', this.account);
         }
       },
     },
-  };
+  });
 </script>
 
 <style lang="less" scoped>

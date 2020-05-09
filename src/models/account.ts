@@ -23,3 +23,8 @@ export interface IDBAccount extends IAccount {
 export interface IDataBase {
   records: Array<IDBAccount>;
 }
+
+export interface IViewAccount extends IAccount {
+  level: number,
+  hasChild: boolean,
+}

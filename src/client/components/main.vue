@@ -24,7 +24,7 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import type { IAccount } from '../../models/account';
+  import type { IAccount, IViewAccount } from '../../models/account';
   import Api from '../router/api';
   import AccountRow from './accountRow.vue';
 
@@ -36,11 +36,6 @@
     { caption: 'Следующий запуск', name: 'time_next_active', style: 'width: 11em;' },
     { caption: 'Account', name: 'accauntname' },
   ];
-
-  interface IViewAccount extends IAccount {
-    level: number,
-    hasChild: boolean,
-  }
 
   export default Vue.extend({
     components: {
