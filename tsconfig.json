@@ -82,5 +82,5 @@
   "files": [
     "src/typings/shims.d.ts"
   ],
-  "exclude": ["node_modules", "webpack"]
+  "exclude": ["node_modules"]
 }

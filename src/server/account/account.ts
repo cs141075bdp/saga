@@ -1,4 +1,4 @@
-import * as paths from '../../../webpack/paths';
+import * as paths from '../../utils/paths';
 import accountAssign from '../../models/accountAssign';
 import { IAccount, IDataBase, IDBAccount } from '../../models/account';
 import app from '../app';

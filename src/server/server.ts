@@ -2,6 +2,7 @@
 
 import app from './app';
 import './account/account';
+import './autoPlay/autoPlay';
 
 app.post('/api/message', ({ body: { name, message } }, res) => {
   console.log(message, name);

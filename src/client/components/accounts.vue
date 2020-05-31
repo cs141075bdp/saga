@@ -44,7 +44,7 @@
 
     data() {
       return {
-        accounts: this.$store.state.accounts as Array<IViewAccount>,
+        accounts: [...this.$store.state.accounts] as Array<IViewAccount>,
         closeGroups: [] as number[],
         schema,
       };
@@ -63,29 +63,31 @@
     },
 
     created() {
-      Api.account.list()
-        .then(({ data }) => {
-          const getLevel = (account: IAccount | IViewAccount | null): number => {
-            if (!account || !account.mid) {
-              return 0;
-            }
+      if (this.accounts.length === 0) {
+        Api.account.list()
+          .then(({ data }) => {
+            const getLevel = (account: IAccount | IViewAccount | null): number => {
+              if (!account || !account.mid) {
+                return 0;
+              }
 
-            return 1 + getLevel(data.find((item: IViewAccount) => item.rid === account.mid));
-          };
-          const getAdditionalProps = (account: IAccount) => {
-            const level = getLevel(account);
-
-            return {
-              level,
-              hasChild: !!data.find((item: IAccount) => item.mid === account.rid),
+              return 1 + getLevel(data.find((item: IViewAccount) => item.rid === account.mid));
             };
-          };
-          this.accounts = data.map((account: IAccount) => ({
-            ...account,
-            ...getAdditionalProps(account),
-          }));
-          this.$store.commit('accounts', this.accounts);
-        });
+            const getAdditionalProps = (account: IAccount) => {
+              const level = getLevel(account);
+
+              return {
+                level,
+                hasChild: !!data.find((item: IAccount) => item.mid === account.rid),
+              };
+            };
+            this.accounts = data.map((account: IAccount) => ({
+              ...account,
+              ...getAdditionalProps(account),
+            }));
+            this.$store.commit('accounts', this.accounts);
+          });
+      }
     },
 
     methods: {

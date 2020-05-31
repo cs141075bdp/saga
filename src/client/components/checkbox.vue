@@ -90,9 +90,11 @@
   .fancy.square label {
     input[type=checkbox]:after {
       content: '\f0c8'; // square
+      background-color: gray;
     }
     input[type=checkbox]:checked::after {
       content: '\f14a'; // check-square
+      background-color: gray;
     }
   }
 
