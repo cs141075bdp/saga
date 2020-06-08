@@ -1,5 +1,5 @@
 <template>
-  <div class="main-accounts">
+  <div class="main-accounts main-tables">
     <table class="table">
       <thead>
         <tr>
@@ -114,21 +114,3 @@
     },
   });
 </script>
-
-<style lang="less">
-  @import "../css/main";
-
-  .main-accounts {
-    .table {
-      max-width: 900px;
-      margin: 10px auto;
-      background-color: silver;
-
-      tr {
-        &:hover {
-          background-color: #1fc2f5;
-        }
-      }
-    }
-  }
-</style>

@@ -14,12 +14,12 @@ export default new Router({
       component: Accounts,
     },
     {
-      path: '/play-macros',
+      path: '/saga/play-macros',
       component: Macroses,
     },
     {
       name: 'create',
-      path: '/battle',
+      path: '/saga/battle',
       component: Battle,
     },
   ],
