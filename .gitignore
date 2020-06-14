@@ -2,6 +2,7 @@
 /node_modules/
 /dist/
 /public/
+/storage/
 database.json
 yarn-error.log
 .idea/

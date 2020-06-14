@@ -1,11 +1,34 @@
+import beautify from 'json-beautify';
 import * as paths from '../../utils/paths';
 import { loadJSON, saveJSON } from '../modules/jsonStorage';
-import { TRecordMacrosInformation, TRecordMacros } from './models';
+import { TRecordMacrosInformation, TRecordMacros, MouseEventStructure, TMouseEvent } from './models';
 
 const fs = require('fs');
 
 const RECORDS_SUB_PATH = './storage/records/';
 const RECORDS_PATH = paths.resolve(RECORDS_SUB_PATH);
+
+const getPackedRecord = (value: TRecordMacros): TRecordMacros => {
+  const children = value.childs.map((item): TMouseEvent => ({ ...MouseEventStructure, ...item }));
+
+  return {
+    ...value,
+    childs: children,
+  };
+};
+const recordReplacer = (key: any, val: any) => {
+  if (key === 'Images') {
+    const images = val as Array<Array<number>>;
+
+    return images.map(values => JSON.stringify(values)).join(',\n');
+  }
+
+  if (typeof val === 'object') {
+    return val;
+  }
+
+  return val;
+};
 
 class RecordsStorage {
   private isChangeFiles: boolean = false;
@@ -83,7 +106,7 @@ class RecordsStorage {
     return macros;
   }
 
-  getByName(name: string): TRecordMacros {
+  getPackedByName(name: string): TRecordMacros {
     const info = this.macrosesInfo.find(item => item.macros === name);
 
     if (!info) {
@@ -97,25 +120,33 @@ class RecordsStorage {
       throw new Error(`Macros with name ${name} not found in file`);
     }
 
-    return macros;
+    return getPackedRecord(macros);
   }
 
-  getByLongName(name: string): TRecordMacros {
+  getPackedByLongName(name: string): TRecordMacros {
     const i = name.indexOf('.');
     const fileName = name.substr(0, i);
     const macrosName = name.substr(i + 1);
-    const macroses = this.getFile(fileName);
+    const macroses = this.getFile(`${fileName}.jrec`);
     const macros = macroses.find(item => item.macros === macrosName);
 
     if (!macros) {
       throw new Error(`Macros with name ${macrosName} not found in file ${fileName}`);
     }
 
-    return macros;
+    return getPackedRecord(macros);
   }
 
-  getFile(fileName: string): Array<TRecordMacros> {
+  getFile(fileName: string, create: boolean = false): Array<TRecordMacros> {
     const filePath = paths.resolve(`${RECORDS_SUB_PATH}${fileName}`);
+
+    if (!fs.existsSync(filePath)) {
+      if (!create) {
+        throw new Error(`file "${filePath}" not found`);
+      } else {
+        return Array<TRecordMacros>(0);
+      }
+    }
 
     return loadJSON(filePath) as Array<TRecordMacros>;
   }
@@ -123,7 +154,7 @@ class RecordsStorage {
   saveFile(fileName: string, values: Array<TRecordMacros>): void {
     const filePath = paths.resolve(`${RECORDS_SUB_PATH}${fileName}`);
 
-    saveJSON(filePath, values);
+    saveJSON(filePath, values, (value: Object | Array<any>) => beautify(value, recordReplacer, 2, 100));
   }
 
   remove(id: number): TRecordMacros {
@@ -146,7 +177,7 @@ class RecordsStorage {
   }
 
   append(fileName: string, value: TRecordMacros): void {
-    const macroses = this.getFile(fileName);
+    const macroses = this.getFile(fileName, true);
     macroses.push(value);
     this.saveFile(fileName, macroses);
   }

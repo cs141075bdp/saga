@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <a href="/" @click.prevent="changeRoute">Accounts</a>
-    <a href="/play-macros" @click.prevent="changeRoute">Macroses</a>
+    <a href="/saga/play-macros" @click.prevent="changeRoute">Macroses</a>
     <router-view />
   </div>
 </template>
@@ -24,4 +24,5 @@
 
 <style lang="less">
   @import "css/app";
+  @import "css/main";
 </style>

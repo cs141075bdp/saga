@@ -33,8 +33,12 @@ export default {
       return axiosInstance.post(genUrl('api/auto-play/macros/delete'), { id });
     },
 
-    getById(id: number) {
+    getById(id: number): Promise<AxiosResponse<TRecordMacrosInformation>> {
       return axiosInstance.get(genUrl('api/auto-play/macros/get-by-id', { id }));
+    },
+
+    getByLongName(name: string): Promise<AxiosResponse<TRecordMacrosInformation>> {
+      return axiosInstance.get(genUrl('api/auto-play/macros/get-by-long-name', { name }));
     },
   },
 };

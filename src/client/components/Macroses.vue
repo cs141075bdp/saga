@@ -1,20 +1,26 @@
 <template>
-  <div class="main-macros">
-    <button @click="remove(1)">delete 1</button>
-    <button @click="remove(1575500340)">delete 1575499719</button>
+  <div class="main-macros main-tables">
     <table class="table">
       <thead>
         <tr>
           <th>File</th>
           <th>Name</th>
           <th>Description</th>
+          <th />
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in macroses" :key="item.id">
-          <th v-text="item.file" />
-          <th v-text="item.macros" />
-          <th v-text="item.description" />
+          <td v-text="item.file" />
+          <td>
+            <a href="#" @click.prevent="demo(item)">
+              {{ getName(item) }}
+            </a>
+          </td>
+          <td v-text="item.description" />
+          <td class="actions">
+            <i :class="['fa', 'fa-trash']" aria-hidden="true" @click="removeItem(item)" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -24,6 +30,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import Api from '../router/api';
+  import { TRecordMacrosInformation } from '../../server/autoPlay/models';
 
   export default Vue.extend({
 
@@ -44,13 +51,44 @@
     },
 
     methods: {
-      remove(id: number) {
-        Api.macros.getById(id);
+      demo(item: TRecordMacrosInformation) {
+        Api.macros.getByLongName(this.getName(item));
+      },
+
+      getName(item: TRecordMacrosInformation) {
+        const fileName = item.file.replace('.jrec', '');
+
+        return `${fileName}.${item.macros}`;
+      },
+
+      removeItem(item: TRecordMacrosInformation) {
+        if (!window.confirm('Удалить запись?')) {
+          return;
+        }
+
+        Api.macros.remove(item.id)
+          .then(() => {
+            const index = this.macroses.findIndex(record => record.id === item.id);
+
+            if (index >= 0) {
+              this.macroses.splice(index, 1);
+            }
+          })
+        ;
       },
     },
   });
 </script>
 
-<style scoped>
+<style lang="less">
+  .actions {
+    .fa {
+      color: #747474;
+      cursor: pointer;
 
+      &:hover {
+        color: black;
+      }
+    }
+  }
 </style>

@@ -5,5 +5,6 @@ export const loadJSON = (path: string): Object => {
 
   return JSON.parse(data);
 };
-
-export const saveJSON = (path: string, obj: Object): void => fs.writeFileSync(path, JSON.stringify(obj, null, 4), 'utf8');
+export type TJSONFormatter = (value: Object | Array<any>) => string;
+const defaultFormatter: TJSONFormatter = (value: Object | Array<any>) => JSON.stringify(value, null, 4);
+export const saveJSON = (path: string, obj: Object, formatter: TJSONFormatter = defaultFormatter): void => fs.writeFileSync(path, formatter(obj), 'utf8');
