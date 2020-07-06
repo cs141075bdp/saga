@@ -13,7 +13,7 @@ app.use(cookieSession({
 }));
 
 app.use((req, res, next) => {
-  console.log(req.session);
+  // console.log(req.session);
   console.log(`received from : ${req.method} ${req.originalUrl}`);
   next();
 });

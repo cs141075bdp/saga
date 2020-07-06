@@ -18,8 +18,8 @@
 
 <script lang="ts">
   import Vue, { PropType } from 'vue';
-  import CheckBox from './checkbox.vue';
-  import RowText from './rowText.vue';
+  import CheckBox from '../components/checkbox.vue';
+  import RowText from '../components/rowText.vue';
   import { IViewAccount } from '../../models/account';
 
   export default Vue.extend({

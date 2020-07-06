@@ -30,7 +30,7 @@ const recordReplacer = (key: any, val: any) => {
   return val;
 };
 
-class RecordsStorage {
+export class RecordsStorage {
   private isChangeFiles: boolean = false;
 
   private files: string[] = [];
@@ -194,4 +194,4 @@ class RecordsStorage {
   }
 }
 
-export default new RecordsStorage();
+// export default new RecordsStorage();

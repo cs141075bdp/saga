@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Accounts from '../components/accounts.vue';
+import Accounts from '../accounts/accounts.vue';
 import Macroses from '../components/Macroses.vue';
 import Battle from '../components/battle.vue';
 

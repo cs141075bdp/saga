@@ -1,6 +1,6 @@
 <template>
   <div class="main-macros main-tables">
-    <table class="table">
+    <table v-if="macroses.length" class="table">
       <thead>
         <tr>
           <th>File</th>
@@ -31,28 +31,54 @@
   import Vue from 'vue';
   import Api from '../router/api';
   import { TRecordMacrosInformation } from '../../server/autoPlay/models';
+  import { TPlayAccount } from '../../models/macrosTypes';
 
   export default Vue.extend({
-
     data() {
       return {
         macroses: [...this.$store.state.listMacros],
+        macrosAccounts: [...this.$store.state.macrosAccounts] as Array<TPlayAccount>,
+        account: this.$store.state.macrosAccount as string | null,
       };
     },
 
+    watch: {
+      account: {
+        handler(value) {
+          this.$store.commit('macrosAccount', value);
+
+          if (value) {
+            Api.macros.list(value)
+              .then((response) => {
+                this.macroses = response.data;
+                this.$store.commit('listMacros', this.macroses);
+              });
+          } else {
+            this.macroses = [];
+            this.$store.commit('listMacros', []);
+          }
+        },
+      },
+    },
+
     created() {
-      if (this.macroses.length === 0) {
-        Api.macros.list()
+      if (this.macrosAccounts.length === 0) {
+        Api.macros.accounts()
           .then((response) => {
-            this.macroses = response.data;
-            this.$store.commit('listMacros', this.macroses);
+            this.macrosAccounts = response.data;
+
+            if (this.macrosAccounts.length > 0) {
+              this.account = this.macrosAccounts[0].guid;
+            }
+
+            this.$store.commit('macrosAccounts', this.macrosAccounts);
           });
       }
     },
 
     methods: {
       demo(item: TRecordMacrosInformation) {
-        Api.macros.getByLongName(this.getName(item));
+        Api.macros.getByLongName(this.account, this.getName(item));
       },
 
       getName(item: TRecordMacrosInformation) {
@@ -66,7 +92,7 @@
           return;
         }
 
-        Api.macros.remove(item.id)
+        Api.macros.remove(this.account, item.id)
           .then(() => {
             const index = this.macroses.findIndex(record => record.id === item.id);
 

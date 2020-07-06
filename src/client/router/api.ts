@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { TRecordMacrosInformation } from '../../server/autoPlay/models';
+import { TPlayAccount } from '../../models/macrosTypes';
 
 const genUrl = (pathName: string, params: Object = {}) => {
   // @ts-ignore
@@ -25,20 +26,24 @@ export default {
   },
 
   macros: {
-    list(): Promise<AxiosResponse<Array<TRecordMacrosInformation>>> {
-      return axiosInstance.get(genUrl('api/auto-play/macros/list'));
+    accounts(): Promise<AxiosResponse<Array<TPlayAccount>>> {
+      return axiosInstance.get(genUrl('api/auto-play/accounts'));
     },
 
-    remove(id: number) {
-      return axiosInstance.post(genUrl('api/auto-play/macros/delete'), { id });
+    list(accountId: string | null): Promise<AxiosResponse<Array<TRecordMacrosInformation>>> {
+      return axiosInstance.get(genUrl('api/auto-play/macros/list'), { headers: { 'work-id': accountId } });
     },
 
-    getById(id: number): Promise<AxiosResponse<TRecordMacrosInformation>> {
-      return axiosInstance.get(genUrl('api/auto-play/macros/get-by-id', { id }));
+    remove(accountId: string | null, id: number) {
+      return axiosInstance.post(genUrl('api/auto-play/macros/delete'), { id }, { headers: { 'work-id': accountId } });
     },
 
-    getByLongName(name: string): Promise<AxiosResponse<TRecordMacrosInformation>> {
-      return axiosInstance.get(genUrl('api/auto-play/macros/get-by-long-name', { name }));
+    getById(accountId: string | null, id: number): Promise<AxiosResponse<TRecordMacrosInformation>> {
+      return axiosInstance.get(genUrl('api/auto-play/macros/get-by-id', { id }), { headers: { 'work-id': accountId } });
+    },
+
+    getByLongName(accountId: string | null, name: string): Promise<AxiosResponse<TRecordMacrosInformation>> {
+      return axiosInstance.get(genUrl('api/auto-play/macros/get-by-long-name', { name }), { headers: { 'work-id': accountId } });
     },
   },
 };

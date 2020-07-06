@@ -26,7 +26,7 @@
   import Vue from 'vue';
   import type { IAccount, IViewAccount } from '../../models/account';
   import Api from '../router/api';
-  import AccountRow from './accountRow.vue';
+  import AccountRow from '../accounts/accountRow.vue';
 
   const schema = [
     { caption: 'Название', name: 'caption' },
